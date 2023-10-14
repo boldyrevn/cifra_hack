@@ -1,18 +1,18 @@
 package model
 
 type User struct {
-    Name           string `json:"name"`
-    HashedPassword string `json:"hashedPassword"`
-    Role           string `json:"role"`
-    Balance        int    `json:"balance"`
+	Name    string `json:"name"`
+	Role    string `json:"role"`
+	Balance int    `json:"balance"`
+	Email   string `json:"email"`
 }
 
 type CreateUser struct {
-    Name     string `json:"name"`
-    Password string `json:"password"`
-    Role     string `json:"role"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
 }
 
 type ErrorMessage struct {
-    Message string `json:"message"`
+	Message string `json:"message"`
 }

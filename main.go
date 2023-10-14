@@ -20,6 +20,6 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/user/{email}", h.GetUser).Methods("GET")
-	router.HandleFunc("/user", h.GetUser).Methods("POST")
+	router.HandleFunc("/user", h.CreateUser).Methods("POST")
 	log.Fatal(http.ListenAndServe(":9777", router))
 }
