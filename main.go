@@ -26,6 +26,6 @@ func main() {
 	router.HandleFunc("/api/zone/book", h.CheckBooking).Methods("GET")
 	router.HandleFunc("/api/zone/book", h.CancelBooking).Methods("DELETE")
 	router.HandleFunc("/api/user/{email}/stat", h.GetStat).Methods("GET")
-
+	router.HandleFunc("/api/invitations/{id}", h.GetInvitations).Methods("GET")
 	log.Fatal(http.ListenAndServe(":9777", router))
 }
