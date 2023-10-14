@@ -55,6 +55,11 @@ func (s *Service) CreateUser(rw http.ResponseWriter, r *http.Request) {
 	writeAnswer(rw, res, http.StatusOK)
 }
 
+func (s *Service) GetZones(w http.ResponseWriter, r *http.Request) {
+	res := s.ds.GetZones()
+	writeAnswer(w, res, http.StatusOK)
+}
+
 func (s *Service) BookZone(w http.ResponseWriter, r *http.Request) {
 	d := json.NewDecoder(r.Body)
 	var bz model.BookZone
@@ -107,4 +112,14 @@ func (s *Service) GetStat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeAnswer(w, us, http.StatusOK)
+}
+
+func (s *Service) GetInvitations(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+	if id == 0 {
+		writeAnswer(w, model.Message{Message: "wrong query parameters"}, http.StatusBadRequest)
+		return
+	}
+	inv := s.ds.GetInvitations(id)
+	writeAnswer(w, inv, http.StatusOK)
 }

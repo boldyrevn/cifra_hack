@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type User struct {
 	ID      int    `json:"id"`
 	Name    string `json:"name"`
@@ -28,4 +30,18 @@ type UserStat struct {
 	CoffeeCups  int `json:"coffeeCups,omitempty"`
 	CompanyDays int `json:"companyDays,omitempty"`
 	OfficeHours int `json:"officeHours,omitempty"`
+}
+
+type Zone struct {
+	ID           int    `json:"id,omitempty"`
+	Title        string `json:"title,omitempty"`
+	CurrentCount int    `json:"currentCount,omitempty"`
+	MaxCount     int    `json:"maxCount,omitempty"`
+}
+
+type Event struct {
+	ID          int       `json:"ID,omitempty"`
+	Description string    `json:"description,omitempty"`
+	StartDate   time.Time `json:"startDate"`
+	EndDate     time.Time `json:"endDate"`
 }

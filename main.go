@@ -21,6 +21,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/user/{email}", h.GetUser).Methods("GET")
 	router.HandleFunc("/api/user", h.CreateUser).Methods("POST")
+	router.HandleFunc("/api/zone", h.GetZones).Methods("GET")
 	router.HandleFunc("/api/zone/book", h.BookZone).Methods("POST")
 	router.HandleFunc("/api/zone/book", h.CheckBooking).Methods("GET")
 	router.HandleFunc("/api/zone/book", h.CancelBooking).Methods("DELETE")

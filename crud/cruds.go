@@ -62,6 +62,19 @@ func (s *Service) CreateUser(u model.CreateUser) (model.User, error) {
 	return nu, nil
 }
 
+func (s *Service) GetZones() []model.Zone {
+	q := `SELECT * FROM zone`
+	res := make([]model.Zone, 0)
+	rows, _ := s.conn.Query(context.Background(), q)
+	defer rows.Close()
+	for rows.Next() {
+		var z model.Zone
+		_ = rows.Scan(&z.ID, &z.Title, &z.CurrentCount, &z.MaxCount)
+		res = append(res, z)
+	}
+	return res
+}
+
 func (s *Service) BookZone(userID, zoneID int) error {
 	q := `SELECT book_zone($2, $1);`
 	_, err := s.conn.Exec(context.Background(), q, userID, zoneID) // userID, zoneID)
@@ -91,4 +104,20 @@ func (s *Service) GetStat(email string) (model.UserStat, error) {
 		return model.UserStat{}, err
 	}
 	return us, nil
+}
+
+func (s *Service) GetInvitations(id int) []model.Event {
+	q := `SELECT event.id, event.description, event.start_date, event.end_date
+       FROM "user" JOIN event_invitation ON "user".id = event_invitation.user_id
+	JOIN event ON event_invitation.event_id = event.id
+	WHERE "user".id = $1`
+	res := make([]model.Event, 0)
+	rows, _ := s.conn.Query(context.Background(), q, id)
+	defer rows.Close()
+	for rows.Next() {
+		var e model.Event
+		_ = rows.Scan(&e.ID, &e.Description, &e.StartDate, &e.EndDate)
+		res = append(res, e)
+	}
+	return res
 }
