@@ -19,7 +19,12 @@ func main() {
 	defer h.CloseConn()
 
 	router := mux.NewRouter()
-	router.HandleFunc("/user/{email}", h.GetUser).Methods("GET")
-	router.HandleFunc("/user", h.CreateUser).Methods("POST")
+	router.HandleFunc("/api/user/{email}", h.GetUser).Methods("GET")
+	router.HandleFunc("/api/user", h.CreateUser).Methods("POST")
+	router.HandleFunc("/api/zone/book", h.BookZone).Methods("POST")
+	router.HandleFunc("/api/zone/book", h.CheckBooking).Methods("GET")
+	router.HandleFunc("/api/zone/book", h.CancelBooking).Methods("DELETE")
+	router.HandleFunc("/api/user/{email}/stat", h.GetStat).Methods("GET")
+
 	log.Fatal(http.ListenAndServe(":9777", router))
 }
