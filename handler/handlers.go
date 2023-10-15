@@ -81,7 +81,7 @@ func (s *Service) CancelBooking(w http.ResponseWriter, r *http.Request) {
 		writeAnswer(w, model.Message{Message: err.Error()}, http.StatusBadRequest)
 		return
 	}
-	err := s.ds.CancelBooking(bz.UserID, bz.UserID)
+	err := s.ds.CancelBooking(bz.UserID, bz.ZoneID)
 	if err != nil {
 		writeAnswer(w, model.Message{Message: "there is no such booking"}, http.StatusBadRequest)
 		return
@@ -122,4 +122,14 @@ func (s *Service) GetInvitations(w http.ResponseWriter, r *http.Request) {
 	}
 	inv := s.ds.GetInvitations(id)
 	writeAnswer(w, inv, http.StatusOK)
+}
+
+func (s *Service) GetEvents(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+	if id == 0 {
+		writeAnswer(w, model.Message{Message: "wrong query parameters"}, http.StatusBadRequest)
+		return
+	}
+	evs := s.ds.GetEvents(id)
+	writeAnswer(w, evs, http.StatusOK)
 }
