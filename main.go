@@ -2,6 +2,7 @@ package main
 
 import (
 	"first_goland_project/handler"
+	gh "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -18,6 +19,13 @@ func main() {
 	h := handler.GetService()
 	defer h.CloseConn()
 
+	cors := gh.CORS(
+		gh.AllowCredentials(),
+		gh.AllowedMethods([]string{"GET", "POST", "DELETE"}),
+		gh.AllowedOrigins([]string{"*"}),
+		gh.AllowedHeaders([]string{"Content-Type"}),
+	)
+
 	router := mux.NewRouter()
 	router.HandleFunc("/api/user/{email}", h.GetUser).Methods("GET")
 	router.HandleFunc("/api/user", h.CreateUser).Methods("POST")
@@ -28,5 +36,5 @@ func main() {
 	router.HandleFunc("/api/user/{email}/stat", h.GetStat).Methods("GET")
 	router.HandleFunc("/api/invitations/{id}", h.GetInvitations).Methods("GET")
 	router.HandleFunc("/api/events/{id}", h.GetEvents).Methods("GET")
-	log.Fatal(http.ListenAndServe(":9777", router))
+	log.Fatal(http.ListenAndServe(":9777", cors(router)))
 }
