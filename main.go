@@ -2,11 +2,13 @@ package main
 
 import (
 	"first_goland_project/handler"
+	"fmt"
 	gh "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"os"
 )
 
 func init() {
@@ -36,5 +38,5 @@ func main() {
 	router.HandleFunc("/api/user/{email}/stat", h.GetStat).Methods("GET")
 	router.HandleFunc("/api/invitations/{id}", h.GetInvitations).Methods("GET")
 	router.HandleFunc("/api/events/{id}", h.GetEvents).Methods("GET")
-	log.Fatal(http.ListenAndServe(":9777", cors(router)))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), gh.LoggingHandler(os.Stdout, cors(router))))
 }

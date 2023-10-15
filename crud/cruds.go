@@ -3,6 +3,7 @@ package crud
 import (
 	"context"
 	"first_goland_project/model"
+	"fmt"
 	"github.com/jackc/pgx/v5"
 	"log"
 	"net/url"
@@ -23,15 +24,15 @@ func GetService() Service {
 func connectDb() *pgx.Conn {
 	dsn := url.URL{
 		Scheme: "postgresql",
-		User:   url.UserPassword("postgres", os.Getenv("PG_PASSWORD")),
-		Host:   "localhost",
-		Path:   "/cifra_db",
+		User:   url.UserPassword(os.Getenv("PG_USER"), os.Getenv("PG_PASSWORD")),
+		Host:   os.Getenv("PG_HOST"),
+		Path:   fmt.Sprintf("/%s", os.Getenv("PG_DATABASE")),
 	}
 	conn, err := pgx.Connect(context.Background(), dsn.String())
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("connection established")
+	log.Println("connected to database")
 	return conn
 }
 
